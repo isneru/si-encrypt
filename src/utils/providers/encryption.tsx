@@ -1,6 +1,6 @@
 import { ChangeEvent, createContext, ReactNode, useState } from "react"
 import toast from "react-hot-toast"
-import { iv } from "server/utils/crypto"
+import { ivAsString } from "server/utils/crypto"
 import { api } from "utils/api"
 import { Fieldset } from "utils/types/encryption"
 
@@ -17,7 +17,6 @@ interface EncryptionProviderProps {
 export const EncryptionProvider = ({ children }: EncryptionProviderProps) => {
   const [text, setText] = useState("")
   const [encryptedText, setEncryptedText] = useState("")
-  const [ivValue, setIvValue] = useState(iv.toString("hex"))
 
   const encryptor = api.crypts.encrypt.useMutation()
   const decryptor = api.crypts.decrypt.useMutation()
@@ -53,28 +52,28 @@ export const EncryptionProvider = ({ children }: EncryptionProviderProps) => {
 
   function encrypt() {
     encryptor.mutate(
-      { text },
+      { text, iv: ivAsString },
       {
-        onSuccess: ({ encryptedText, iv }) => {
-          setEncryptedText(encryptedText)
-          setIvValue(iv)
+        onSuccess: val => {
+          setEncryptedText(val)
+          setText("")
         },
         onError: () => toast.error("Encryption failed")
       }
     )
-    setText("")
   }
 
   function decrypt() {
     decryptor.mutate(
-      { encryptedText, iv: ivValue },
+      { encryptedText, iv: ivAsString },
       {
-        onSuccess: val => setText(val),
+        onSuccess: val => {
+          setText(val)
+          setEncryptedText("")
+        },
         onError: () => toast.error("Decryption failed")
       }
     )
-    setEncryptedText("")
-    setIvValue("")
   }
 
   return (

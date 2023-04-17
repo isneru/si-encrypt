@@ -6,20 +6,22 @@ export type EncryptData = {
 }
 
 export const algorithm = "aes-256-cbc"
-export const key = randomBytes(32)
-export const iv = randomBytes(16)
 
-export function encrypt(text: string): EncryptData {
-  const cipher = createCipheriv(algorithm, Buffer.from(key), iv)
+export const keyAsBuffer = randomBytes(32)
+
+export const ivAsBuffer = randomBytes(16)
+export const ivAsString = ivAsBuffer.toString("hex")
+
+export function encrypt(text: string) {
+  const cipher = createCipheriv(algorithm, keyAsBuffer, ivAsBuffer)
   let encrypted = cipher.update(text)
   encrypted = Buffer.concat([encrypted, cipher.final()])
-  return { iv: iv.toString("hex"), encryptedText: encrypted.toString("hex") }
+  return encrypted.toString("hex")
 }
 
-export function decrypt(data: EncryptData): string {
-  const iv = Buffer.from(data.iv, "hex")
-  const encryptedText = Buffer.from(data.encryptedText, "hex")
-  const decipher = createDecipheriv(algorithm, Buffer.from(key), iv)
+export function decrypt(textToDecrypt: string): string {
+  const encryptedText = Buffer.from(textToDecrypt, "hex")
+  const decipher = createDecipheriv(algorithm, keyAsBuffer, ivAsBuffer)
   let decrypted = decipher.update(encryptedText)
   decrypted = Buffer.concat([decrypted, decipher.final()])
   return decrypted.toString()

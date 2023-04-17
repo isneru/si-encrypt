@@ -21,7 +21,8 @@ const Home: NextPage = () => {
               onChange={input.onChange}
             />
             <button
-              className="mt-2 w-full rounded-md bg-zinc-900 p-2 text-white focus:shadow"
+              disabled={!input.value}
+              className="mt-2 w-full rounded-md bg-zinc-900 p-2 text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
               type="button"
               onClick={button.onClick}>
               {button.label}
