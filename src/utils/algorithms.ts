@@ -9,8 +9,8 @@ export const algorithms = [
     padding: "PKCS7"
   },
   {
-    href: "/test",
-    name: "TEST",
+    href: "/image",
+    name: "Encrypt Image",
     key: "128",
     iv: "128",
     block: "128",
