@@ -26,3 +26,7 @@ export function decrypt(textToDecrypt: string): string {
   decrypted = Buffer.concat([decrypted, decipher.final()])
   return decrypted.toString()
 }
+
+export function encryptImage() {}
+
+export function decryptImage() {}
