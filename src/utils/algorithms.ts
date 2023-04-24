@@ -11,10 +11,10 @@ export const algorithms = [
   {
     href: "/image",
     name: "Encrypt Image",
-    key: "128",
-    iv: "128",
-    block: "128",
-    mode: "CFB",
+    key: "256",
+    iv: "256",
+    block: "256",
+    mode: "CBC",
     padding: "PKCS7"
   }
 ]

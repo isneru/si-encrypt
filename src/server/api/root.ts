@@ -1,4 +1,4 @@
-import { cryptsRouter } from "server/api/routers/crypts"
+import { imageRouter, textRouter } from "server/api/routers/crypto"
 import { createTRPCRouter } from "server/api/trpc"
 
 /**
@@ -7,7 +7,10 @@ import { createTRPCRouter } from "server/api/trpc"
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  crypts: cryptsRouter
+  crypts: createTRPCRouter({
+    image: imageRouter,
+    text: textRouter
+  })
 })
 
 // export type definition of API

@@ -1,6 +1,5 @@
 import { ChangeEvent, createContext, ReactNode, useState } from "react"
 import toast from "react-hot-toast"
-import { ivAsString } from "server/utils/crypto"
 import { api } from "utils/api"
 import { Fieldset } from "utils/types/encryption"
 
@@ -18,8 +17,8 @@ export const EncryptionProvider = ({ children }: EncryptionProviderProps) => {
   const [text, setText] = useState("")
   const [encryptedText, setEncryptedText] = useState("")
 
-  const encryptor = api.crypts.encrypt.useMutation()
-  const decryptor = api.crypts.decrypt.useMutation()
+  const encryptor = api.crypts.text.encrypt.useMutation()
+  const decryptor = api.crypts.text.decrypt.useMutation()
 
   const fieldsets = [
     {
@@ -52,7 +51,7 @@ export const EncryptionProvider = ({ children }: EncryptionProviderProps) => {
 
   function encrypt() {
     encryptor.mutate(
-      { text, iv: ivAsString },
+      { text },
       {
         onSuccess: val => {
           setEncryptedText(val)
@@ -65,7 +64,7 @@ export const EncryptionProvider = ({ children }: EncryptionProviderProps) => {
 
   function decrypt() {
     decryptor.mutate(
-      { encryptedText, iv: ivAsString },
+      { encryptedText },
       {
         onSuccess: val => {
           setText(val)

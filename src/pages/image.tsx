@@ -3,12 +3,18 @@ import clsx from "clsx"
 import { Layout } from "components"
 import { type NextPage } from "next"
 import { useEffect, useState } from "react"
+import { api } from "utils/api"
 
 const ImagePage: NextPage = () => {
   const algorithm = "Encrypt Image"
 
+  const encryptor = api.crypts.image.encrypt.useMutation()
+  const decryptor = api.crypts.image.decrypt.useMutation()
+
   const [isDragging, setIsDragging] = useState(false)
   const [file, setFile] = useState<File>()
+  const [decryptedFile, setDecryptedFile] = useState<File>()
+  const [encryptedFile, setEncryptedFile] = useState<string>()
   const [isWrong, setIsWrong] = useState(false)
 
   useEffect(() => {
@@ -49,12 +55,50 @@ const ImagePage: NextPage = () => {
     }
   }
 
+  function handleEncrypt(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault()
+    if (!file) return
+    const reader = new FileReader()
+    reader.readAsBinaryString(file)
+    reader.onload = () => {
+      const binaryString = reader.result
+      encryptor.mutate(
+        { image: binaryString as string },
+        {
+          onSuccess: val => {
+            console.log(val)
+            setEncryptedFile(val)
+            setFile(undefined)
+          }
+        }
+      )
+    }
+  }
+
+  function handleDecrypt(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault()
+    if (!encryptedFile) return
+    decryptor.mutate(
+      { image: encryptedFile },
+      {
+        onSuccess: file => {
+          console.log(file)
+          const newFile = new File([file], "decrypted.png", {
+            type: "image/png"
+          })
+          setEncryptedFile(undefined)
+          setDecryptedFile(newFile)
+        }
+      }
+    )
+  }
+
   return (
     <Layout title={algorithm} h1={algorithm}>
       <form className="flex w-full max-w-[80%] items-center justify-center gap-4 font-semibold">
         <label
           className={clsx(
-            "relative flex aspect-video w-full flex-col items-center justify-center overflow-hidden rounded-md border-2 bg-zinc-200 text-xl font-normal transition-all",
+            "relative flex aspect-video w-full flex-col items-center justify-center overflow-hidden rounded-md border-2 text-xl font-normal transition-all",
             {
               "border-zinc-900": !isDragging && !file && !isWrong,
               "border-blue-600 bg-blue-300/50": isDragging,
@@ -74,17 +118,25 @@ const ImagePage: NextPage = () => {
                 src={URL.createObjectURL(file)}
                 alt={file.name}
               />
-              <div className="absolute bottom-5 z-10 flex items-center justify-center gap-2 rounded-lg bg-zinc-900 p-2 leading-none text-white">
+              <div className="absolute bottom-5 right-5 z-10 flex flex-col items-center justify-center gap-2 rounded-lg bg-zinc-900 p-2 leading-none text-white">
                 <span className="text-white">{file.name}</span>
-                <button
-                  type="button"
-                  className="rounded-md bg-red-500 p-1 hover:bg-red-600"
-                  onClick={e => {
-                    e.preventDefault()
-                    setFile(undefined)
-                  }}>
-                  <Cross2Icon width={20} height={20} />
-                </button>
+                <div className="flex w-full gap-2">
+                  <button
+                    type="button"
+                    className="flex grow items-center justify-center rounded-md bg-emerald-500 px-4 py-1 hover:bg-emerald-600"
+                    onClick={handleEncrypt}>
+                    Encrypt
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded-md bg-red-500 p-1 hover:bg-red-600"
+                    onClick={e => {
+                      e.preventDefault()
+                      setFile(undefined)
+                    }}>
+                    <Cross2Icon width={20} height={20} />
+                  </button>
+                </div>
               </div>
             </>
           )}
@@ -100,6 +152,7 @@ const ImagePage: NextPage = () => {
           onChange={handleInputOnChange}
         />
       </form>
+      {!!encryptedFile && <button onClick={handleDecrypt}>Decrypt</button>}
     </Layout>
   )
 }

@@ -17,3 +17,11 @@ export default createNextApiHandler({
         }
       : undefined
 })
+// allow more than 1mb of data to be sent to the API
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "8mb"
+    }
+  }
+}
