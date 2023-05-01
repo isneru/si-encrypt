@@ -10,6 +10,7 @@ export const keyAsBuffer = randomBytes(32)
 export const ivAsBuffer = randomBytes(16)
 export const ivAsString = ivAsBuffer.toString("hex")
 
+// text encryption
 export function encrypt(text: string) {
   const cipher = createCipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
   let encrypted = cipher.update(text)
@@ -25,6 +26,7 @@ export function decrypt(textToDecrypt: string): string {
   return decrypted.toString()
 }
 
+// image encryption
 export function encryptImage(imageAsString: string) {
   const cipher = createCipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
   let encrypted = cipher.update(imageAsString)
@@ -32,8 +34,8 @@ export function encryptImage(imageAsString: string) {
   return encrypted.toString("hex")
 }
 
-export function decryptImage(imageAsString: string) {
-  const encryptedText = Buffer.from(imageAsString, "hex")
+export function decryptImage(imageToDecrypt: string): string {
+  const encryptedText = Buffer.from(imageToDecrypt, "hex")
   const decipher = createDecipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
   let decrypted = decipher.update(encryptedText)
   decrypted = Buffer.concat([decrypted, decipher.final()])

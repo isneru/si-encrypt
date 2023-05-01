@@ -1,10 +1,10 @@
 import { Layout } from "components"
 import { type NextPage } from "next"
 import { useContext } from "react"
-import { EncryptionContext } from "utils/providers/encryption"
+import { TextEncryptionContext } from "utils/providers/encrypt/text"
 
 const Home: NextPage = () => {
-  const { fieldsets } = useContext(EncryptionContext)
+  const { fieldsets } = useContext(TextEncryptionContext)
 
   const algorithm = "aes-256-cbc"
 

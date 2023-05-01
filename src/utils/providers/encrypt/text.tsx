@@ -3,17 +3,21 @@ import toast from "react-hot-toast"
 import { api } from "utils/api"
 import { Fieldset } from "utils/types/encryption"
 
-interface EncryptionContextData {
+interface TextEncryptionContextData {
   fieldsets: Fieldset[]
 }
 
-export const EncryptionContext = createContext({} as EncryptionContextData)
+export const TextEncryptionContext = createContext(
+  {} as TextEncryptionContextData
+)
 
-interface EncryptionProviderProps {
+interface TextEncryptionProviderProps {
   children: ReactNode
 }
 
-export const EncryptionProvider = ({ children }: EncryptionProviderProps) => {
+export const TextEncryptionProvider = ({
+  children
+}: TextEncryptionProviderProps) => {
   const [text, setText] = useState("")
   const [encryptedText, setEncryptedText] = useState("")
 
@@ -76,8 +80,8 @@ export const EncryptionProvider = ({ children }: EncryptionProviderProps) => {
   }
 
   return (
-    <EncryptionContext.Provider value={{ fieldsets }}>
+    <TextEncryptionContext.Provider value={{ fieldsets }}>
       {children}
-    </EncryptionContext.Provider>
+    </TextEncryptionContext.Provider>
   )
 }

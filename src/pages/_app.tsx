@@ -1,6 +1,6 @@
 import { type AppType } from "next/app"
 import { api } from "utils/api"
-import { EncryptionProvider } from "utils/providers/encryption"
+import { EncryptionProvider } from "utils/providers/encrypt/"
 
 import { Toaster } from "react-hot-toast"
 import "styles/globals.css"
