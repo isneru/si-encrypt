@@ -2,20 +2,13 @@ import { Cross2Icon } from "@radix-ui/react-icons"
 import clsx from "clsx"
 import { Layout } from "components"
 import { type NextPage } from "next"
-import { useContext, useEffect } from "react"
-import { ImageEncryptionContext } from "utils/providers/encrypt/image"
+import { useContext } from "react"
+import { FileEncryptionContext } from "utils/providers/encrypt/file"
 
 const ImagePage: NextPage = () => {
-  const c = useContext(ImageEncryptionContext)
+  const c = useContext(FileEncryptionContext)
 
-  const algorithm = "Encrypt Image"
-
-  useEffect(() => {
-    if (c.isWrong) {
-      const timeout = setTimeout(() => c.setIsWrong(false), 2000)
-      return () => clearTimeout(timeout)
-    }
-  }, [c.isWrong, c.setIsWrong])
+  const algorithm = "Encrypt File"
 
   return (
     <Layout title={algorithm} h1={algorithm}>
@@ -26,17 +19,16 @@ const ImagePage: NextPage = () => {
           className={clsx(
             "relative flex aspect-video w-full flex-col items-center justify-center overflow-hidden rounded-md border-2 text-xl font-normal transition-all",
             {
-              "border-zinc-900": !c.isDragging && !c.file && !c.isWrong,
+              "border-zinc-900": !c.isDragging && !c.file,
               "border-blue-600 bg-blue-300/50": c.isDragging,
-              "border-emerald-600 bg-emerald-300/50": c.file,
-              "border-red-600 bg-red-300/50": c.isWrong
+              "border-emerald-600 bg-emerald-300/50": c.file
             }
           )}
           onDragOver={e => e.preventDefault()}
           onDragEnter={c.unsetDragging}
           onDragLeave={c.setDragging}
           onDrop={c.handleOnDrop}
-          htmlFor="img">
+          htmlFor="file">
           {!!c.file && (
             <>
               <img
@@ -70,13 +62,7 @@ const ImagePage: NextPage = () => {
             <span className="text-zinc-900">Drag and drop an image here</span>
           )}
         </label>
-        <input
-          hidden
-          accept="image/*"
-          type="file"
-          id="img"
-          onChange={c.handleInputOnChange}
-        />
+        <input hidden type="file" id="file" onChange={c.handleInputOnChange} />
       </form>
       {!!c.encryptedFile && <button onClick={c.handleDecrypt}>Decrypt</button>}
     </Layout>

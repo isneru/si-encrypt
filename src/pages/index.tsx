@@ -10,7 +10,9 @@ const Home: NextPage = () => {
 
   return (
     <Layout title="Home" h1={algorithm}>
-      <form className="flex w-full max-w-[80%] items-center justify-center gap-4 font-semibold">
+      <form
+        onSubmit={e => e.preventDefault()}
+        className="flex w-full max-w-[80%] items-center justify-center gap-4 font-semibold">
         {fieldsets.map(({ id, label, input, button }) => (
           <fieldset className="flex w-full flex-col" key={id}>
             <label htmlFor={id}>{label}</label>

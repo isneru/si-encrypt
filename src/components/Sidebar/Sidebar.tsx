@@ -2,7 +2,7 @@ import { Cross2Icon, HamburgerMenuIcon } from "@radix-ui/react-icons"
 import clsx from "clsx"
 import Link from "next/link"
 import { useState } from "react"
-import { algorithms } from "utils/algorithms"
+import { links } from "utils/links"
 
 interface SidebarProps {}
 
@@ -30,16 +30,19 @@ export const Sidebar = (props: SidebarProps) => {
           flex: isOpen,
           "hidden md:flex": !isOpen
         })}>
-        <p className="text-xl font-bold">ALGORITHMS</p>
-        {algorithms.map(algo => (
+        <p className="flex text-xl font-bold">
+          ENCRYPT <span className="ml-auto">SI</span>
+        </p>
+        {links.map(link => (
           <Link
-            key={algo.name}
+            key={link.name}
             className="w-full rounded-md bg-zinc-200 p-2 font-semibold text-black hover:bg-zinc-100"
-            href={algo.href}>
-            {algo.name}
+            href={link.href}>
+            {link.name}
           </Link>
         ))}
       </div>
+      <img src="/pporto.png" alt="P Porto" className="mt-auto" />
     </aside>
   )
 }

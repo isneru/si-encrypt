@@ -41,3 +41,19 @@ export function decryptImage(imageToDecrypt: string): string {
   decrypted = Buffer.concat([decrypted, decipher.final()])
   return decrypted.toString()
 }
+
+// TODO: file encryption
+export function encryptFile(fileAsString: string) {
+  const cipher = createCipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
+  let encrypted = cipher.update(fileAsString)
+  encrypted = Buffer.concat([encrypted, cipher.final()])
+  return encrypted.toString("hex")
+}
+
+export function decryptFile(fileToDecrypt: string): string {
+  const encryptedText = Buffer.from(fileToDecrypt, "hex")
+  const decipher = createDecipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
+  let decrypted = decipher.update(encryptedText)
+  decrypted = Buffer.concat([decrypted, decipher.final()])
+  return decrypted.toString()
+}

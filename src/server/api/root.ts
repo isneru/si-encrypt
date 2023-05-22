@@ -1,4 +1,4 @@
-import { imageRouter, textRouter } from "server/api/routers/crypto"
+import { fileRouter, imageRouter, textRouter } from "server/api/routers/crypto"
 import { createTRPCRouter } from "server/api/trpc"
 
 /**
@@ -9,7 +9,8 @@ import { createTRPCRouter } from "server/api/trpc"
 export const appRouter = createTRPCRouter({
   crypts: createTRPCRouter({
     image: imageRouter,
-    text: textRouter
+    text: textRouter,
+    file: fileRouter
   })
 })
 
