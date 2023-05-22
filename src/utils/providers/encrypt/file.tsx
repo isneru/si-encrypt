@@ -41,11 +41,11 @@ export const FileEncryptionProvider = ({
   const decryptor = api.crypts.file.decrypt.useMutation()
 
   function setDragging() {
-    return setIsDragging(false)
+    return setIsDragging(true)
   }
 
   function unsetDragging() {
-    return setIsDragging(true)
+    return setIsDragging(false)
   }
 
   function handleOnDrop(e: React.DragEvent<HTMLLabelElement>) {
@@ -58,9 +58,7 @@ export const FileEncryptionProvider = ({
   function handleInputOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return
     const firstFile = e.target.files[0]
-    if (firstFile && firstFile.type.startsWith("file/")) {
-      setFile(firstFile)
-    }
+    setFile(firstFile)
   }
 
   function handleEncrypt() {

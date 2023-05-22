@@ -44,11 +44,11 @@ export const ImageEncryptionProvider = ({
   const decryptor = api.crypts.image.decrypt.useMutation()
 
   function setDragging() {
-    return setIsDragging(false)
+    return setIsDragging(true)
   }
 
   function unsetDragging() {
-    return setIsDragging(true)
+    return setIsDragging(false)
   }
 
   function handleOnDrop(e: React.DragEvent<HTMLLabelElement>) {

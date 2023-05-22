@@ -33,8 +33,8 @@ const ImagePage: NextPage = () => {
             }
           )}
           onDragOver={e => e.preventDefault()}
-          onDragEnter={c.unsetDragging}
-          onDragLeave={c.setDragging}
+          onDragEnter={c.setDragging}
+          onDragLeave={c.unsetDragging}
           onDrop={c.handleOnDrop}
           htmlFor="img">
           {!!c.file && (

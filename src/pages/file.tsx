@@ -5,7 +5,7 @@ import { type NextPage } from "next"
 import { useContext } from "react"
 import { FileEncryptionContext } from "utils/providers/encrypt/file"
 
-const ImagePage: NextPage = () => {
+const FilePage: NextPage = () => {
   const c = useContext(FileEncryptionContext)
 
   const algorithm = "Encrypt File"
@@ -25,38 +25,31 @@ const ImagePage: NextPage = () => {
             }
           )}
           onDragOver={e => e.preventDefault()}
-          onDragEnter={c.unsetDragging}
-          onDragLeave={c.setDragging}
+          onDragEnter={c.setDragging}
+          onDragLeave={c.unsetDragging}
           onDrop={c.handleOnDrop}
           htmlFor="file">
           {!!c.file && (
-            <>
-              <img
-                className="h-full w-full object-cover"
-                src={URL.createObjectURL(c.file)}
-                alt={c.file.name}
-              />
-              <div className="absolute bottom-5 right-5 z-10 flex flex-col items-center justify-center gap-2 rounded-lg bg-black/80 p-2 leading-none text-white">
-                <span className="text-white">{c.file.name}</span>
-                <div className="flex w-full gap-2">
-                  <button
-                    type="button"
-                    className="flex grow items-center justify-center rounded-md bg-emerald-500 px-4 py-1 hover:bg-emerald-600"
-                    onClick={c.handleEncrypt}>
-                    Encrypt
-                  </button>
-                  <button
-                    type="button"
-                    className="rounded-md bg-red-500 p-1 hover:bg-red-600"
-                    onClick={e => {
-                      e.preventDefault()
-                      c.setFile(undefined)
-                    }}>
-                    <Cross2Icon width={20} height={20} />
-                  </button>
-                </div>
+            <div className="absolute bottom-5 right-5 z-10 flex flex-col items-center justify-center gap-2 rounded-lg bg-black/80 p-2 leading-none text-white">
+              <span className="text-white">{c.file.name}</span>
+              <div className="flex w-full gap-2">
+                <button
+                  type="button"
+                  className="flex grow items-center justify-center rounded-md bg-emerald-500 px-4 py-1 hover:bg-emerald-600"
+                  onClick={c.handleEncrypt}>
+                  Encrypt
+                </button>
+                <button
+                  type="button"
+                  className="rounded-md bg-red-500 p-1 hover:bg-red-600"
+                  onClick={e => {
+                    e.preventDefault()
+                    c.setFile(undefined)
+                  }}>
+                  <Cross2Icon width={20} height={20} />
+                </button>
               </div>
-            </>
+            </div>
           )}
           {!c.file && (
             <span className="text-zinc-900">Drag and drop an image here</span>
@@ -69,4 +62,4 @@ const ImagePage: NextPage = () => {
   )
 }
 
-export default ImagePage
+export default FilePage
