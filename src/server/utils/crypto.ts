@@ -1,58 +1,87 @@
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto"
 
-export type EncryptData = {
-  iv: string
-  encryptedText: string
-}
-
-export const keyAsBuffer = randomBytes(32)
-
-export const ivAsBuffer = randomBytes(16)
-export const ivAsString = ivAsBuffer.toString("hex")
+export const keyBuffer = randomBytes(32)
+export const ivBuffer = randomBytes(16)
 
 // text encryption
-export function encrypt(text: string) {
-  const cipher = createCipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
+export function encryptText(text: string, userKey?: string) {
+  const cipher = createCipheriv(
+    "aes-256-cbc",
+    userKey
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      : keyBuffer,
+    ivBuffer
+  )
   let encrypted = cipher.update(text)
   encrypted = Buffer.concat([encrypted, cipher.final()])
   return encrypted.toString("hex")
 }
 
-export function decrypt(textToDecrypt: string): string {
-  const encryptedText = Buffer.from(textToDecrypt, "hex")
-  const decipher = createDecipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
+export function decryptText(text: string, userKey?: string) {
+  const encryptedText = Buffer.from(text, "hex")
+  const decipher = createDecipheriv(
+    "aes-256-cbc",
+    userKey
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      : keyBuffer,
+    ivBuffer
+  )
   let decrypted = decipher.update(encryptedText)
   decrypted = Buffer.concat([decrypted, decipher.final()])
   return decrypted.toString()
 }
 
 // image encryption
-export function encryptImage(imageAsString: string) {
-  const cipher = createCipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
-  let encrypted = cipher.update(imageAsString)
+export function encryptImage(imageString: string, userKey?: string) {
+  const cipher = createCipheriv(
+    "aes-256-cbc",
+    userKey
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      : keyBuffer,
+    ivBuffer
+  )
+  let encrypted = cipher.update(imageString)
   encrypted = Buffer.concat([encrypted, cipher.final()])
   return encrypted.toString("hex")
 }
 
-export function decryptImage(imageToDecrypt: string): string {
-  const encryptedText = Buffer.from(imageToDecrypt, "hex")
-  const decipher = createDecipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
+export function decryptImage(image: string, userKey?: string) {
+  const encryptedText = Buffer.from(image, "hex")
+  const decipher = createDecipheriv(
+    "aes-256-cbc",
+    userKey
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      : keyBuffer,
+    ivBuffer
+  )
   let decrypted = decipher.update(encryptedText)
   decrypted = Buffer.concat([decrypted, decipher.final()])
   return decrypted.toString()
 }
 
 // TODO: file encryption
-export function encryptFile(fileAsString: string) {
-  const cipher = createCipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
-  let encrypted = cipher.update(fileAsString)
+export function encryptFile(fileString: string, userKey?: string) {
+  const cipher = createCipheriv(
+    "aes-256-cbc",
+    userKey
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      : keyBuffer,
+    ivBuffer
+  )
+  let encrypted = cipher.update(fileString)
   encrypted = Buffer.concat([encrypted, cipher.final()])
   return encrypted.toString("hex")
 }
 
-export function decryptFile(fileToDecrypt: string): string {
-  const encryptedText = Buffer.from(fileToDecrypt, "hex")
-  const decipher = createDecipheriv("aes-256-cbc", keyAsBuffer, ivAsBuffer)
+export function decryptFile(file: string, userKey?: string) {
+  const encryptedText = Buffer.from(file, "hex")
+  const decipher = createDecipheriv(
+    "aes-256-cbc",
+    userKey
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      : keyBuffer,
+    ivBuffer
+  )
   let decrypted = decipher.update(encryptedText)
   decrypted = Buffer.concat([decrypted, decipher.final()])
   return decrypted.toString()

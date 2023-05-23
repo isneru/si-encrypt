@@ -4,9 +4,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { links } from "utils/links"
 
-interface SidebarProps {}
-
-export const Sidebar = (props: SidebarProps) => {
+export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <aside
@@ -30,19 +28,19 @@ export const Sidebar = (props: SidebarProps) => {
           flex: isOpen,
           "hidden md:flex": !isOpen
         })}>
-        <p className="flex text-xl font-bold">
+        <Link href="/" className="flex text-xl font-bold">
           ENCRYPT <span className="ml-auto">SI</span>
-        </p>
+        </Link>
         {links.map(link => (
           <Link
             key={link.name}
-            className="w-full rounded-md bg-zinc-200 p-2 font-semibold text-black hover:bg-zinc-100"
+            className="w-full rounded-md bg-zinc-200 p-2 font-bold text-black hover:bg-zinc-100"
             href={link.href}>
             {link.name}
           </Link>
         ))}
       </div>
-      <img src="/pporto.png" alt="P Porto" className="mt-auto" />
+      <img src="/pporto.png" alt="P Porto" className="mt-auto grayscale" />
     </aside>
   )
 }

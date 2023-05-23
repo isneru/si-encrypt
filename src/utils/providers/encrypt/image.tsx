@@ -5,6 +5,7 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
+  useEffect,
   useState
 } from "react"
 import { api } from "utils/api"
@@ -63,6 +64,13 @@ export const ImageEncryptionProvider = ({
     }
   }
 
+  useEffect(() => {
+    if (isWrong) {
+      const timeout = setTimeout(() => setIsWrong(false), 2000)
+      return () => clearTimeout(timeout)
+    }
+  }, [isWrong])
+
   function handleInputOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return
     const firstFile = e.target.files[0]
@@ -108,7 +116,7 @@ export const ImageEncryptionProvider = ({
           const imageAsBlob = new Blob([Buffer.from(image!, "base64")], {
             type: imageType
           })
-          const imageAsFile = new File([imageAsBlob], "decryptedImage", {
+          const imageAsFile = new File([imageAsBlob], "encrypted", {
             type: imageType
           })
           setEncryptedFile(undefined)
