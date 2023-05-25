@@ -11,7 +11,7 @@ export const Sidebar = () => {
       className={clsx(
         "flex h-full flex-col items-center gap-4 bg-zinc-900 p-5 text-white md:static md:w-96 md:justify-normal",
         {
-          "absolute left-0 top-0 w-full justify-center": isOpen,
+          "absolute left-0 top-0 z-50 w-full justify-center": isOpen,
           "w-10": !isOpen
         }
       )}>
@@ -29,7 +29,7 @@ export const Sidebar = () => {
           "hidden md:flex": !isOpen
         })}>
         <Link href="/" className="flex text-xl font-bold">
-          ENCRYPT <span className="ml-auto">SI</span>
+          HOME - SI
         </Link>
         {links.map(link => (
           <Link

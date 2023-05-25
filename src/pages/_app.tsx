@@ -1,13 +1,12 @@
 import { type AppType } from "next/app"
 import { api } from "utils/api"
-import { EncryptionProvider } from "utils/providers/encrypt/"
 
 import { Toaster } from "react-hot-toast"
 import "styles/globals.css"
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <EncryptionProvider>
+    <>
       <Component {...pageProps} />
       <Toaster
         position="bottom-center"
@@ -15,7 +14,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           className: "bg-zinc-900 text-white"
         }}
       />
-    </EncryptionProvider>
+    </>
   )
 }
 

@@ -16,3 +16,5 @@ export type FieldsetButton = {
   onClick: () => void
   label: string
 }
+
+export type CryptMode = "encrypt" | "decrypt"

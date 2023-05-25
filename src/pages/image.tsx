@@ -1,29 +1,32 @@
-import { FileUpload, Layout } from "components"
+import { CryptNav, ImageCrypt, Layout } from "components"
 import { type NextPage } from "next"
-import { useContext } from "react"
-import { ImageEncryptionContext } from "utils/providers/encrypt/image"
+import { useMode } from "utils/hooks"
 
-const Image: NextPage = () => {
-  const c = useContext(ImageEncryptionContext)
+const ImagePage: NextPage = () => {
+  const { mode, setMode } = useMode()
 
   return (
     <Layout title="Image Encryption">
-      <FileUpload
-        accept="image/*"
-        handleOnDrop={c.handleOnDrop}
-        setDragging={c.setDragging}
-        unsetDragging={c.unsetDragging}
-        encryptedFile={c.encryptedFile}
-        file={c.file}
-        isDragging={c.isDragging}
-        isWrong={c.isWrong}
-        handleDecrypt={c.handleDecrypt}
-        handleEncrypt={c.handleEncrypt}
-        handleInputOnChange={c.handleInputOnChange}
-        setFile={c.setFile}
-      />
+      <CryptNav mode={mode} setMode={setMode} />
+      <section className="mt-2 flex w-full max-w-[80%] flex-col items-center justify-center gap-4 font-semibold">
+        {/*     <FileUpload
+          accept="image/*"
+          handleOnDrop={c.handleOnDrop}
+          setDragging={c.setDragging}
+          unsetDragging={c.unsetDragging}
+          encryptedFile={c.encryptedFile}
+          file={c.file}
+          isDragging={c.isDragging}
+          isWrong={c.isWrong}
+          handleDecrypt={c.handleDecrypt}
+          handleEncrypt={c.handleEncrypt}
+          handleInputOnChange={c.handleInputOnChange}
+          setFile={c.setFile}
+        /> */}
+        <ImageCrypt mode={mode} setMode={setMode} />
+      </section>
     </Layout>
   )
 }
 
-export default Image
+export default ImagePage
