@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useImageEncryption } from "utils/hooks"
 import { CryptMode } from "utils/types/encryption"
 
@@ -9,8 +9,10 @@ interface ImageCryptProps {
 }
 
 export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
+  const [isDownloadable, setIsDownloadable] = useState(false)
   const {
     encrypt,
+    decrypt,
     encryptedImage,
     handleInputOnChange,
     handleOnDrop,
@@ -67,9 +69,56 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
           onClick={encrypt}>
           Encrypt
         </button>
+        {isDownloadable && image && (
+          <a
+            className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
+            href={URL.createObjectURL(image)}
+            download={image.name}>
+            Download
+          </a>
+        )}
       </fieldset>
     )
   }
 
-  return <></>
+  return (
+    <fieldset className="flex w-full flex-col gap-2">
+      <label
+        className={clsx(
+          "relative flex aspect-[21/9] w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md border-2 text-xl font-normal transition-all",
+          {
+            "border-zinc-900": !isDragging && !image && !isWrong,
+            "border-blue-600 bg-blue-300/50": isDragging,
+            "border-emerald-600 bg-emerald-300/50": image,
+            "border-red-600 bg-red-300/50": isWrong
+          }
+        )}
+        onDragOver={e => e.preventDefault()}
+        onDragEnter={() => !isDragging && setIsDragging(true)}
+        onDragLeave={() => isDragging && setIsDragging(false)}
+        onDrop={handleOnDrop}
+        htmlFor="encrypted-img">
+        <span className="text-zinc-900">
+          {encryptedImage ? "Encrypted Image" : "Drag and drop an image here"}
+        </span>
+        <input
+          hidden
+          accept="image/png, image/jpeg, image/jpg"
+          type="file"
+          id="encrypted-img"
+          onChange={handleInputOnChange}
+        />
+      </label>
+      <button
+        disabled={!image && !encryptedImage}
+        className="w-full rounded-md bg-zinc-900 p-2 text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
+        type="button"
+        onClick={() => {
+          decrypt()
+          setIsDownloadable(true)
+        }}>
+        Decrypt
+      </button>
+    </fieldset>
+  )
 }

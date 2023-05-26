@@ -11,6 +11,7 @@ export function useImageEncryption(
   const [isDragging, setIsDragging] = useState(false)
 
   const encryptor = api.crypts.image.encrypt.useMutation()
+  const decryptor = api.crypts.image.decrypt.useMutation()
 
   useEffect(() => {
     if (isWrong) {
@@ -60,6 +61,31 @@ export function useImageEncryption(
     }
   }
 
+  function decrypt() {
+    if (!encryptedImage) return
+
+    decryptor.mutate(
+      {
+        image: encryptedImage
+      },
+      {
+        onSuccess: val => {
+          const image = val.split(",")[1]
+          const imageType = val.split(",")[0]?.split(";")[0]?.split(":")[1]
+          const imageAsBlob = new Blob([Buffer.from(image!, "base64")], {
+            type: imageType
+          })
+          const imageAsFile = new File([imageAsBlob], "encrypted", {
+            type: imageType
+          })
+          setMode("encrypt")
+          setEncryptedImage(undefined)
+          setImage(imageAsFile)
+        }
+      }
+    )
+  }
+
   return {
     image,
     encryptedImage,
@@ -67,6 +93,7 @@ export function useImageEncryption(
     isDragging,
     setIsDragging,
     encrypt,
+    decrypt,
     handleOnDrop,
     handleInputOnChange
   }

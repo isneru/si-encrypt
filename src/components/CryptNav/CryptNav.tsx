@@ -15,7 +15,7 @@ export const CryptNav = ({ mode, setMode }: CryptNavProps) => {
         <button
           key={tab}
           onClick={() => setMode(tab)}
-          className="relative rounded-full px-3 py-1.5 font-medium text-black transition"
+          className="relative rounded-full px-3 py-1.5 font-medium capitalize text-black transition"
           style={{
             WebkitTapHighlightColor: "transparent"
           }}>
