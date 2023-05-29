@@ -1,5 +1,5 @@
 import { Cross2Icon } from "@radix-ui/react-icons"
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { ReactNode, createContext, useEffect, useState } from "react"
 
 interface CustomKeyProviderProps {
@@ -45,8 +45,25 @@ export const CustomKeyProvider = ({ children }: CustomKeyProviderProps) => {
     <CustomKeyContext.Provider value={{ key: !!key ? key : undefined }}>
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
-            <div className="container flex h-full w-full flex-col gap-3 bg-white px-6 py-4 md:h-4/5 md:rounded-lg">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 transition-opacity">
+            <motion.div
+              transition={{ type: "spring", bounce: 0.1, duration: 0.3 }}
+              initial={{
+                y: 100,
+                opacity: 0
+              }}
+              animate={{
+                y: 0,
+                opacity: 1
+              }}
+              exit={{
+                opacity: 0
+              }}
+              className="container flex h-full w-full flex-col gap-3 bg-white px-6 py-4 md:h-4/5 md:rounded-lg">
               <div className="flex w-full">
                 <p className="text-2xl font-bold">Change Key</p>
                 <button onClick={closeModal} className="ml-auto">
@@ -76,8 +93,8 @@ export const CustomKeyProvider = ({ children }: CustomKeyProviderProps) => {
                   Save
                 </button>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
       {children}
