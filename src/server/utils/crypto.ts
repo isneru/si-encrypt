@@ -8,7 +8,7 @@ export function encryptText(text: string, userKey?: string) {
   const cipher = createCipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+      ? Buffer.concat([Buffer.from(userKey, "utf-8"), keyBuffer]).subarray(
           0,
           32
         )
@@ -25,7 +25,7 @@ export function decryptText(text: string, userKey?: string) {
   const decipher = createDecipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+      ? Buffer.concat([Buffer.from(userKey, "utf-8"), keyBuffer]).subarray(
           0,
           32
         )
@@ -42,7 +42,7 @@ export function encryptImage(imageString: string, userKey?: string) {
   const cipher = createCipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+      ? Buffer.concat([Buffer.from(userKey, "utf-8"), keyBuffer]).subarray(
           0,
           32
         )
@@ -59,7 +59,7 @@ export function decryptImage(image: string, userKey?: string) {
   const decipher = createDecipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+      ? Buffer.concat([Buffer.from(userKey, "utf-8"), keyBuffer]).subarray(
           0,
           32
         )
@@ -75,7 +75,7 @@ export function encryptFile(fileString: string, userKey?: string) {
   const cipher = createCipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+      ? Buffer.concat([Buffer.from(userKey, "utf-8"), keyBuffer]).subarray(
           0,
           32
         )
@@ -92,7 +92,7 @@ export function decryptFile(file: string, userKey?: string) {
   const decipher = createDecipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+      ? Buffer.concat([Buffer.from(userKey, "utf-8"), keyBuffer]).subarray(
           0,
           32
         )
