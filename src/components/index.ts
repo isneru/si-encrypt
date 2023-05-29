@@ -1,5 +1,5 @@
 export * from "./CryptNav"
-export * from "./FileUpload"
+export * from "./FileCrypt"
 export * from "./ImageCrypt"
 export * from "./Layout"
 export * from "./Sidebar"

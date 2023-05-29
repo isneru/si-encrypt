@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { Dispatch, SetStateAction } from "react"
-import { CryptMode } from "utils/types/encryption"
+import { CryptMode } from "utils/types/crypt"
 
 interface CryptNavProps {
   mode: CryptMode

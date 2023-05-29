@@ -1,20 +1,16 @@
-import { type AppType } from "next/app"
+import type { AppType } from "next/app"
+import { Toaster } from "react-hot-toast"
 import { api } from "utils/api"
 
-import { Toaster } from "react-hot-toast"
 import "styles/globals.css"
+import { CustomKeyProvider } from "utils/providers/customKey"
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <>
+    <CustomKeyProvider>
       <Component {...pageProps} />
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          className: "bg-zinc-900 text-white"
-        }}
-      />
-    </>
+      <Toaster position="bottom-center" />
+    </CustomKeyProvider>
   )
 }
 

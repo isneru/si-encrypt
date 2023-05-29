@@ -1,52 +1,18 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  DragEvent,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useState
-} from "react"
+import { Dispatch, SetStateAction, useContext, useState } from "react"
 import { api } from "utils/api"
+import { CustomKeyContext } from "utils/providers/customKey"
+import { CryptMode } from "utils/types/crypt"
 
-interface FileEncryptionContextData {
-  isDragging: boolean
-  file: File | undefined
-  setDragging(): void
-  unsetDragging(): void
-  handleOnDrop(e: DragEvent<HTMLLabelElement>): void
-  handleEncrypt(): void
-  setFile: Dispatch<SetStateAction<File | undefined>>
-  handleInputOnChange(e: ChangeEvent<HTMLInputElement>): void
-  handleDecrypt(): void
-  encryptedFile: string | undefined
-}
-
-export const FileEncryptionContext = createContext(
-  {} as FileEncryptionContextData
-)
-
-interface FileEncryptionProviderProps {
-  children: ReactNode
-}
-
-export const FileEncryptionProvider = ({
-  children
-}: FileEncryptionProviderProps) => {
+export function useFileEncryption(
+  setMode: Dispatch<SetStateAction<CryptMode>>
+) {
+  const { key } = useContext(CustomKeyContext)
   const [file, setFile] = useState<File>()
   const [encryptedFile, setEncryptedFile] = useState<string>()
   const [isDragging, setIsDragging] = useState(false)
 
   const encryptor = api.crypts.file.encrypt.useMutation()
   const decryptor = api.crypts.file.decrypt.useMutation()
-
-  function setDragging() {
-    return setIsDragging(true)
-  }
-
-  function unsetDragging() {
-    return setIsDragging(false)
-  }
 
   function handleOnDrop(e: React.DragEvent<HTMLLabelElement>) {
     e.preventDefault()
@@ -61,7 +27,7 @@ export const FileEncryptionProvider = ({
     setFile(firstFile)
   }
 
-  function handleEncrypt() {
+  function encrypt() {
     if (!file) return
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -69,10 +35,12 @@ export const FileEncryptionProvider = ({
       const fileAsString = reader.result as string
       encryptor.mutate(
         {
-          image: fileAsString
+          file: fileAsString,
+          key
         },
         {
           onSuccess: val => {
+            setMode("decrypt")
             setFile(undefined)
             setEncryptedFile(val)
           }
@@ -81,11 +49,12 @@ export const FileEncryptionProvider = ({
     }
   }
 
-  function handleDecrypt() {
+  function decrypt() {
     if (!encryptedFile) return
     decryptor.mutate(
       {
-        image: encryptedFile
+        file: encryptedFile,
+        key
       },
       {
         onSuccess: val => {
@@ -94,9 +63,10 @@ export const FileEncryptionProvider = ({
           const fileAsBlob = new Blob([Buffer.from(file!, "base64")], {
             type: fileType
           })
-          const fileAsFile = new File([fileAsBlob], "decryptedFile", {
+          const fileAsFile = new File([fileAsBlob], "encrypted", {
             type: fileType
           })
+          setMode("encrypt")
           setEncryptedFile(undefined)
           setFile(fileAsFile)
         }
@@ -104,21 +74,14 @@ export const FileEncryptionProvider = ({
     )
   }
 
-  return (
-    <FileEncryptionContext.Provider
-      value={{
-        isDragging,
-        file,
-        handleOnDrop,
-        setDragging,
-        unsetDragging,
-        handleEncrypt,
-        setFile,
-        handleInputOnChange,
-        handleDecrypt,
-        encryptedFile
-      }}>
-      {children}
-    </FileEncryptionContext.Provider>
-  )
+  return {
+    file,
+    encryptedFile,
+    isDragging,
+    setIsDragging,
+    encrypt,
+    decrypt,
+    handleOnDrop,
+    handleInputOnChange
+  }
 }

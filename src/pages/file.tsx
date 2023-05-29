@@ -1,27 +1,16 @@
-import { FileUpload, Layout } from "components"
+import { CryptNav, FileCrypt, Layout } from "components"
 import { type NextPage } from "next"
-import { useContext } from "react"
-import { FileEncryptionContext } from "utils/providers/encrypt/file"
+import { useMode } from "utils/hooks"
 
 const File: NextPage = () => {
-  const c = useContext(FileEncryptionContext)
+  const { mode, setMode } = useMode()
 
   return (
     <Layout title={"File Encryption"}>
-      <FileUpload
-        accept="*"
-        handleOnDrop={c.handleOnDrop}
-        setDragging={c.setDragging}
-        unsetDragging={c.unsetDragging}
-        encryptedFile={c.encryptedFile}
-        isWrong={false}
-        file={c.file}
-        isDragging={c.isDragging}
-        handleDecrypt={c.handleDecrypt}
-        handleEncrypt={c.handleEncrypt}
-        handleInputOnChange={c.handleInputOnChange}
-        setFile={c.setFile}
-      />
+      <CryptNav mode={mode} setMode={setMode} />
+      <section className="mt-2 flex w-full max-w-[80%] flex-col items-center justify-center gap-4 font-semibold">
+        <FileCrypt mode={mode} setMode={setMode} />
+      </section>
     </Layout>
   )
 }

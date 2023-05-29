@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import { Dispatch, SetStateAction, useState } from "react"
 import { useImageEncryption } from "utils/hooks"
-import { CryptMode } from "utils/types/encryption"
+import { CryptMode } from "utils/types/crypt"
 
 interface ImageCryptProps {
   mode: CryptMode
@@ -18,8 +18,8 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
     handleOnDrop,
     image,
     isDragging,
-    setIsDragging,
-    isWrong
+    isWrong,
+    setIsDragging
   } = useImageEncryption(setMode)
 
   if (mode === "encrypt") {

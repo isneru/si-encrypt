@@ -1,10 +1,18 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState
+} from "react"
 import { api } from "utils/api"
-import { CryptMode } from "utils/types/encryption"
+import { CustomKeyContext } from "utils/providers/customKey"
+import { CryptMode } from "utils/types/crypt"
 
 export function useImageEncryption(
   setMode: Dispatch<SetStateAction<CryptMode>>
 ) {
+  const { key } = useContext(CustomKeyContext)
   const [image, setImage] = useState<File>()
   const [encryptedImage, setEncryptedImage] = useState<string>()
   const [isWrong, setIsWrong] = useState(false)
@@ -48,7 +56,8 @@ export function useImageEncryption(
       const imageAsString = reader.result as string
       encryptor.mutate(
         {
-          image: imageAsString
+          image: imageAsString,
+          key
         },
         {
           onSuccess: val => {
@@ -66,7 +75,8 @@ export function useImageEncryption(
 
     decryptor.mutate(
       {
-        image: encryptedImage
+        image: encryptedImage,
+        key
       },
       {
         onSuccess: val => {

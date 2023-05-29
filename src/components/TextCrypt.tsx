@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useState } from "react"
 import toast from "react-hot-toast"
 import { api } from "utils/api"
-import { CryptMode } from "utils/types/encryption"
+import { CustomKeyContext } from "utils/providers/customKey"
+import { CryptMode } from "utils/types/crypt"
 
 interface TextCryptProps {
   mode: CryptMode
@@ -9,6 +10,7 @@ interface TextCryptProps {
 }
 
 export const TextCrypt = ({ mode, setMode }: TextCryptProps) => {
+  const { key } = useContext(CustomKeyContext)
   const [text, setText] = useState("")
   const [encryptedText, setEncryptedText] = useState("")
 
@@ -23,7 +25,7 @@ export const TextCrypt = ({ mode, setMode }: TextCryptProps) => {
   }
   function encrypt() {
     encryptor.mutate(
-      { text },
+      { text, key },
       { onSuccess: onEncryptSuccess, onError: onEncryptError }
     )
   }
@@ -39,7 +41,7 @@ export const TextCrypt = ({ mode, setMode }: TextCryptProps) => {
   }
   function decrypt() {
     decryptor.mutate(
-      { encryptedText },
+      { encryptedText, key },
       { onSuccess: onDecryptSuccess, onError: onDecryptError }
     )
   }
