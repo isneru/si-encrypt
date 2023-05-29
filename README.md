@@ -39,7 +39,9 @@ Rodar o comando `npm run dev` no terminal e abrir o browser em http://localhost:
 1. Clicar na área ou arrastar um ficheiro para dentro da mesma
 2. Clicar no botão abaixo para encriptar
 
-!!!warning Em todas as páginas ( /text, /file, /image ), existe uma aba acima do input com os botões de "Encrypt" e "Decrypt" com o propósito de alternar e indicar o modo atual.
+> **Note**
+> 
+> Em todas as páginas ( /text, /file, /image ), existe uma aba acima do input com os botões de "Encrypt" e "Decrypt" com o propósito de alternar e indicar o modo atual.
 
 ## Falhas
 
