@@ -8,7 +8,10 @@ export function encryptText(text: string, userKey?: string) {
   const cipher = createCipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+          0,
+          32
+        )
       : keyBuffer,
     ivBuffer
   )
@@ -22,7 +25,10 @@ export function decryptText(text: string, userKey?: string) {
   const decipher = createDecipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+          0,
+          32
+        )
       : keyBuffer,
     ivBuffer
   )
@@ -36,7 +42,10 @@ export function encryptImage(imageString: string, userKey?: string) {
   const cipher = createCipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+          0,
+          32
+        )
       : keyBuffer,
     ivBuffer
   )
@@ -50,7 +59,10 @@ export function decryptImage(image: string, userKey?: string) {
   const decipher = createDecipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+          0,
+          32
+        )
       : keyBuffer,
     ivBuffer
   )
@@ -59,12 +71,14 @@ export function decryptImage(image: string, userKey?: string) {
   return decrypted.toString()
 }
 
-// TODO: file encryption
 export function encryptFile(fileString: string, userKey?: string) {
   const cipher = createCipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+          0,
+          32
+        )
       : keyBuffer,
     ivBuffer
   )
@@ -78,7 +92,10 @@ export function decryptFile(file: string, userKey?: string) {
   const decipher = createDecipheriv(
     "aes-256-cbc",
     userKey
-      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")])
+      ? Buffer.concat([keyBuffer, Buffer.from(userKey, "utf-8")]).subarray(
+          0,
+          32
+        )
       : keyBuffer,
     ivBuffer
   )

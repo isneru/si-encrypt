@@ -4,13 +4,13 @@ import { z } from "zod"
 
 export const imageRouter = createTRPCRouter({
   encrypt: publicProcedure
-    .input(z.object({ image: z.string() }))
+    .input(z.object({ image: z.string(), key: z.string().optional() }))
     .mutation(async ({ input }) => {
-      return encryptImage(input.image)
+      return encryptImage(input.image, input.key)
     }),
   decrypt: publicProcedure
-    .input(z.object({ image: z.string() }))
+    .input(z.object({ image: z.string(), key: z.string().optional() }))
     .mutation(async ({ input }) => {
-      return decryptImage(input.image)
+      return decryptImage(input.image, input.key)
     })
 })

@@ -4,13 +4,13 @@ import { z } from "zod"
 
 export const textRouter = createTRPCRouter({
   encrypt: publicProcedure
-    .input(z.object({ text: z.string() }))
+    .input(z.object({ text: z.string(), key: z.string().optional() }))
     .mutation(async ({ input }) => {
-      return encryptText(input.text)
+      return encryptText(input.text, input.key)
     }),
   decrypt: publicProcedure
-    .input(z.object({ encryptedText: z.string() }))
+    .input(z.object({ encryptedText: z.string(), key: z.string().optional() }))
     .mutation(async ({ input }) => {
-      return decryptText(input.encryptedText)
+      return decryptText(input.encryptedText, input.key)
     })
 })
