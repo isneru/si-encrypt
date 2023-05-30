@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 import { useImageEncryption } from "utils/hooks"
 import { CryptMode } from "utils/types/crypt"
 
@@ -9,7 +9,6 @@ interface ImageCryptProps {
 }
 
 export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
-  const [isDownloadable, setIsDownloadable] = useState(false)
   const {
     encrypt,
     decrypt,
@@ -21,6 +20,8 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
     isWrong,
     setIsDragging
   } = useImageEncryption(setMode)
+
+  useEffect(() => console.log(encryptedImage), [encryptedImage])
 
   if (mode === "encrypt") {
     return (
@@ -38,7 +39,7 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
           onDragOver={e => e.preventDefault()}
           onDragEnter={() => !isDragging && setIsDragging(true)}
           onDragLeave={() => isDragging && setIsDragging(false)}
-          onDrop={handleOnDrop}
+          onDrop={handleOnDrop[mode]}
           htmlFor="image">
           {!!image && image.type.includes("image") ? (
             <>
@@ -59,20 +60,17 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
             accept="image/png, image/jpeg, image/jpg"
             type="file"
             id="image"
-            onChange={handleInputOnChange}
+            onChange={handleInputOnChange[mode]}
           />
         </label>
         <button
           disabled={!image && !encryptedImage}
           className="w-full rounded-md bg-zinc-900 p-2 text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
           type="button"
-          onClick={() => {
-            encrypt()
-            setIsDownloadable(true)
-          }}>
+          onClick={encrypt}>
           Encrypt
         </button>
-        {isDownloadable && image && (
+        {image && (
           <a
             className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
             href={URL.createObjectURL(image)}
@@ -99,30 +97,26 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
         onDragOver={e => e.preventDefault()}
         onDragEnter={() => !isDragging && setIsDragging(true)}
         onDragLeave={() => isDragging && setIsDragging(false)}
-        onDrop={handleOnDrop}
+        onDrop={handleOnDrop[mode]}
         htmlFor="encrypted-img">
         <span className="text-zinc-900">
           {encryptedImage ? "Encrypted Image" : "Drag and drop an image here"}
         </span>
         <input
           hidden
-          accept="image/png, image/jpeg, image/jpg"
           type="file"
           id="encrypted-img"
-          onChange={handleInputOnChange}
+          onChange={handleInputOnChange[mode]}
         />
       </label>
       <button
         disabled={!image && !encryptedImage}
         className="w-full rounded-md bg-zinc-900 p-2 text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
         type="button"
-        onClick={() => {
-          decrypt()
-          setIsDownloadable(true)
-        }}>
+        onClick={decrypt}>
         Decrypt
       </button>
-      {isDownloadable && encryptedImage && (
+      {encryptedImage && (
         <a
           className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
           download="encrypted"

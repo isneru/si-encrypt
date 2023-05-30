@@ -28,24 +28,57 @@ export function useImageEncryption(
     }
   }, [isWrong])
 
-  function handleOnDrop(e: React.DragEvent<HTMLLabelElement>) {
-    e.preventDefault()
-    setIsDragging(false)
-    const firstFile = e.dataTransfer.files[0]
-    if (firstFile && firstFile.type.startsWith("image/")) {
-      setImage(firstFile)
-    }
-    if (firstFile && !firstFile.type.startsWith("image/")) {
-      setIsWrong(true)
+  const handleOnDrop = {
+    encrypt: (e: React.DragEvent<HTMLLabelElement>) => {
+      e.preventDefault()
+      setIsDragging(false)
+      const firstFile = e.dataTransfer.files[0]
+      if (firstFile && firstFile.type.startsWith("image/")) {
+        setImage(firstFile)
+      }
+      if (firstFile && !firstFile.type.startsWith("image/")) {
+        setIsWrong(true)
+      }
+    },
+    decrypt: (e: React.DragEvent<HTMLLabelElement>) => {
+      e.preventDefault()
+      setIsDragging(false)
+      const firstFile = e.dataTransfer.files[0]
+      if (firstFile) {
+        const fileReader = new FileReader()
+        fileReader.readAsText(firstFile, "UTF-8")
+        fileReader.onload = () => {
+          const fileAsString = fileReader.result as string
+          if (fileAsString) {
+            setEncryptedImage(fileAsString)
+          }
+        }
+      }
     }
   }
 
-  function handleInputOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (!e.target.files) return
-    const firstFile = e.target.files[0]
-    firstFile && firstFile.type.startsWith("image/")
-      ? setImage(firstFile)
-      : setIsWrong(true)
+  const handleInputOnChange = {
+    encrypt: (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) return
+      const firstFile = e.target.files[0]
+      firstFile && firstFile.type.startsWith("image/")
+        ? setImage(firstFile)
+        : setIsWrong(true)
+    },
+    decrypt: (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) return
+      const firstFile = e.target.files[0]
+      if (firstFile) {
+        const fileReader = new FileReader()
+        fileReader.readAsText(firstFile, "UTF-8")
+        fileReader.onload = () => {
+          const fileAsString = fileReader.result as string
+          if (fileAsString) {
+            setEncryptedImage(fileAsString)
+          }
+        }
+      }
+    }
   }
 
   function encrypt() {

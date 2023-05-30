@@ -14,17 +14,48 @@ export function useFileEncryption(
   const encryptor = api.crypts.file.encrypt.useMutation()
   const decryptor = api.crypts.file.decrypt.useMutation()
 
-  function handleOnDrop(e: React.DragEvent<HTMLLabelElement>) {
-    e.preventDefault()
-    setIsDragging(false)
-    const firstFile = e.dataTransfer.files[0]
-    setFile(firstFile)
+  const handleOnDrop = {
+    encrypt: (e: React.DragEvent<HTMLLabelElement>) => {
+      e.preventDefault()
+      setIsDragging(false)
+      const firstFile = e.dataTransfer.files[0]
+      firstFile && setFile(firstFile)
+    },
+    decrypt: (e: React.DragEvent<HTMLLabelElement>) => {
+      e.preventDefault()
+      setIsDragging(false)
+      const firstFile = e.dataTransfer.files[0]
+      if (firstFile) {
+        const fileReader = new FileReader()
+        fileReader.readAsText(firstFile, "UTF-8")
+        fileReader.onload = () => {
+          const fileAsString = fileReader.result as string
+          if (fileAsString) {
+            setEncryptedFile(fileAsString)
+          }
+        }
+      }
+    }
   }
 
-  function handleInputOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (!e.target.files) return
-    const firstFile = e.target.files[0]
-    setFile(firstFile)
+  const handleInputOnChange = {
+    encrypt: (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) return
+      const firstFile = e.target.files[0]
+      firstFile && setFile(firstFile)
+    },
+    decrypt: (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) return
+      const firstFile = e.target.files[0]
+      if (firstFile) {
+        const fileReader = new FileReader()
+        fileReader.readAsText(firstFile, "UTF-8")
+        fileReader.onload = () => {
+          const fileAsString = fileReader.result as string
+          fileAsString && setEncryptedFile(fileAsString)
+        }
+      }
+    }
   }
 
   function encrypt() {

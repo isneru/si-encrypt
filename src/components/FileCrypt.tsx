@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { useFileEncryption } from "utils/hooks"
 import { CryptMode } from "utils/types/crypt"
 
@@ -9,7 +9,6 @@ interface FileCryptProps {
 }
 
 export const FileCrypt = ({ mode, setMode }: FileCryptProps) => {
-  const [isDownloadable, setIsDownloadable] = useState(false)
   const {
     encrypt,
     decrypt,
@@ -36,7 +35,7 @@ export const FileCrypt = ({ mode, setMode }: FileCryptProps) => {
           onDragOver={e => e.preventDefault()}
           onDragEnter={() => !isDragging && setIsDragging(true)}
           onDragLeave={() => isDragging && setIsDragging(false)}
-          onDrop={handleOnDrop}
+          onDrop={handleOnDrop[mode]}
           htmlFor="file">
           {!!file ? (
             <>
@@ -54,19 +53,21 @@ export const FileCrypt = ({ mode, setMode }: FileCryptProps) => {
           ) : (
             <span className="text-zinc-900">Drag and drop a file here</span>
           )}
-          <input hidden type="file" id="file" onChange={handleInputOnChange} />
+          <input
+            hidden
+            type="file"
+            id="file"
+            onChange={handleInputOnChange[mode]}
+          />
         </label>
         <button
           disabled={!file && !encryptedFile}
           className="w-full rounded-md bg-zinc-900 p-2 text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
           type="button"
-          onClick={() => {
-            encrypt()
-            setIsDownloadable(true)
-          }}>
+          onClick={encrypt}>
           Encrypt
         </button>
-        {isDownloadable && file && (
+        {file && (
           <a
             className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
             href={URL.createObjectURL(file)}
@@ -92,7 +93,7 @@ export const FileCrypt = ({ mode, setMode }: FileCryptProps) => {
         onDragOver={e => e.preventDefault()}
         onDragEnter={() => !isDragging && setIsDragging(true)}
         onDragLeave={() => isDragging && setIsDragging(false)}
-        onDrop={handleOnDrop}
+        onDrop={handleOnDrop[mode]}
         htmlFor="encrypted-img">
         <span className="text-zinc-900">
           {encryptedFile ? "Encrypted File" : "Drag and drop a file here"}
@@ -101,20 +102,17 @@ export const FileCrypt = ({ mode, setMode }: FileCryptProps) => {
           hidden
           type="file"
           id="encrypted-img"
-          onChange={handleInputOnChange}
+          onChange={handleInputOnChange[mode]}
         />
       </label>
       <button
         disabled={!file && !encryptedFile}
         className="w-full rounded-md bg-zinc-900 p-2 text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
         type="button"
-        onClick={() => {
-          decrypt()
-          setIsDownloadable(true)
-        }}>
+        onClick={decrypt}>
         Decrypt
       </button>
-      {isDownloadable && encryptedFile && (
+      {encryptedFile && (
         <a
           className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
           download="encrypted"
