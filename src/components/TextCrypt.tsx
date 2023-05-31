@@ -1,8 +1,8 @@
+import { api } from "lib/api"
+import { CustomKeyContext } from "lib/providers/customKey"
+import { CryptMode } from "lib/types/crypt"
 import { Dispatch, SetStateAction, useContext, useState } from "react"
 import toast from "react-hot-toast"
-import { api } from "utils/api"
-import { CustomKeyContext } from "utils/providers/customKey"
-import { CryptMode } from "utils/types/crypt"
 
 interface TextCryptProps {
   mode: CryptMode

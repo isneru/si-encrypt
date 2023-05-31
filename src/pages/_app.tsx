@@ -1,9 +1,9 @@
+import { api } from "lib/api"
+import { CustomKeyProvider } from "lib/providers/customKey"
 import type { AppType } from "next/app"
 import { Toaster } from "react-hot-toast"
-import { api } from "utils/api"
 
 import "styles/globals.css"
-import { CustomKeyProvider } from "utils/providers/customKey"
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (

@@ -1,7 +1,7 @@
 import clsx from "clsx"
+import { useImageEncryption } from "lib/hooks"
+import { CryptMode } from "lib/types/crypt"
 import { Dispatch, SetStateAction, useEffect } from "react"
-import { useImageEncryption } from "utils/hooks"
-import { CryptMode } from "utils/types/crypt"
 
 interface ImageCryptProps {
   mode: CryptMode

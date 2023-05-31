@@ -1,6 +1,6 @@
 import { CryptNav, Layout, TextCrypt } from "components"
+import { useMode } from "lib/hooks"
 import { type NextPage } from "next"
-import { useMode } from "utils/hooks"
 
 const Text: NextPage = () => {
   const { mode, setMode } = useMode()

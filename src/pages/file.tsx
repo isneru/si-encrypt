@@ -1,6 +1,6 @@
 import { CryptNav, FileCrypt, Layout } from "components"
+import { useMode } from "lib/hooks"
 import { type NextPage } from "next"
-import { useMode } from "utils/hooks"
 
 const File: NextPage = () => {
   const { mode, setMode } = useMode()
