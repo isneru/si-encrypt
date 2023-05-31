@@ -49,9 +49,7 @@ export function useImageEncryption(
         fileReader.readAsText(firstFile, "UTF-8")
         fileReader.onload = () => {
           const fileAsString = fileReader.result as string
-          if (fileAsString) {
-            setEncryptedImage(fileAsString)
-          }
+          fileAsString && setEncryptedImage(fileAsString)
         }
       }
     }
@@ -73,9 +71,7 @@ export function useImageEncryption(
         fileReader.readAsText(firstFile, "UTF-8")
         fileReader.onload = () => {
           const fileAsString = fileReader.result as string
-          if (fileAsString) {
-            setEncryptedImage(fileAsString)
-          }
+          fileAsString && setEncryptedImage(fileAsString)
         }
       }
     }
@@ -118,7 +114,7 @@ export function useImageEncryption(
           const imageAsBlob = new Blob([Buffer.from(image!, "base64")], {
             type: imageType
           })
-          const imageAsFile = new File([imageAsBlob], "encrypted", {
+          const imageAsFile = new File([imageAsBlob], "decrypted", {
             type: imageType
           })
           setMode("encrypt")

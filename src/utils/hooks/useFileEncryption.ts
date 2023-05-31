@@ -30,9 +30,7 @@ export function useFileEncryption(
         fileReader.readAsText(firstFile, "UTF-8")
         fileReader.onload = () => {
           const fileAsString = fileReader.result as string
-          if (fileAsString) {
-            setEncryptedFile(fileAsString)
-          }
+          fileAsString && setEncryptedFile(fileAsString)
         }
       }
     }
@@ -94,9 +92,10 @@ export function useFileEncryption(
           const fileAsBlob = new Blob([Buffer.from(file!, "base64")], {
             type: fileType
           })
-          const fileAsFile = new File([fileAsBlob], "encrypted", {
+          const fileAsFile = new File([fileAsBlob], "decrypted", {
             type: fileType
           })
+
           setMode("encrypt")
           setEncryptedFile(undefined)
           setFile(fileAsFile)

@@ -70,13 +70,19 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
           onClick={encrypt}>
           Encrypt
         </button>
-        {image && (
+        {image ? (
           <a
             className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
             href={URL.createObjectURL(image)}
             download="decrypted">
             Download
           </a>
+        ) : (
+          <button
+            disabled
+            className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90">
+            Download
+          </button>
         )}
       </fieldset>
     )
@@ -116,13 +122,19 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
         onClick={decrypt}>
         Decrypt
       </button>
-      {encryptedImage && (
+      {encryptedImage ? (
         <a
           className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
           download="encrypted"
           href={URL.createObjectURL(new File([encryptedImage], "encrypted"))}>
           Download
         </a>
+      ) : (
+        <button
+          disabled
+          className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90">
+          Download
+        </button>
       )}
     </fieldset>
   )

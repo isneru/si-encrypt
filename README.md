@@ -43,6 +43,12 @@ Rodar o comando `npm run dev` no terminal e abrir o browser em http://localhost:
 >
 > Em todas as páginas [`/text`, `/file`, `/image`], existe uma aba acima do input com os botões de **Encrypt** e **Decrypt** com o propósito de alternar e indicar o modo atual.
 
+## Falhas
+
+- Ao encriptar o ficheiro, não soube como extrair a informação de que tipo de ficheiro se tratava (extensão), então ao fazer o download, é feito em txt.
+  > Para contornar esta falha, cabe ao cliente A passar a informação que falta, para o cliente B mudar a extensão manualmente ao fazer o download do ficheiro decriptado.
+  > ![Explicação visual](public/AB.png)
+
 #### Tecnologias usadas
 
 - [x] [Next.js](https://nextjs.org)

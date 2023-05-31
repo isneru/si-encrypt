@@ -67,13 +67,19 @@ export const FileCrypt = ({ mode, setMode }: FileCryptProps) => {
           onClick={encrypt}>
           Encrypt
         </button>
-        {file && (
+        {file ? (
           <a
             className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
             href={URL.createObjectURL(file)}
             download="decrypted">
             Download
           </a>
+        ) : (
+          <button
+            disabled
+            className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90">
+            Download
+          </button>
         )}
       </fieldset>
     )
@@ -112,13 +118,19 @@ export const FileCrypt = ({ mode, setMode }: FileCryptProps) => {
         onClick={decrypt}>
         Decrypt
       </button>
-      {encryptedFile && (
+      {encryptedFile ? (
         <a
           className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90"
           download="encrypted"
           href={URL.createObjectURL(new File([encryptedFile], "encrypted"))}>
           Download
         </a>
+      ) : (
+        <button
+          disabled
+          className="w-full rounded-md bg-zinc-900 p-2 text-center text-white focus:shadow disabled:cursor-not-allowed disabled:opacity-90">
+          Download
+        </button>
       )}
     </fieldset>
   )
