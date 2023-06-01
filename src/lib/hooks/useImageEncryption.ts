@@ -33,12 +33,9 @@ export function useImageEncryption(
       e.preventDefault()
       setIsDragging(false)
       const firstFile = e.dataTransfer.files[0]
-      if (firstFile && firstFile.type.startsWith("image/")) {
-        setImage(firstFile)
-      }
-      if (firstFile && !firstFile.type.startsWith("image/")) {
-        setIsWrong(true)
-      }
+      firstFile && firstFile.type.startsWith("image/")
+        ? setImage(firstFile)
+        : setIsWrong(true)
     },
     decrypt: (e: React.DragEvent<HTMLLabelElement>) => {
       e.preventDefault()
@@ -46,8 +43,8 @@ export function useImageEncryption(
       const firstFile = e.dataTransfer.files[0]
       if (firstFile) {
         const fileReader = new FileReader()
-        fileReader.readAsText(firstFile, "UTF-8")
-        fileReader.onload = () => {
+        fileReader.readAsText(firstFile)
+        fileReader.onloadend = () => {
           const fileAsString = fileReader.result as string
           fileAsString && setEncryptedImage(fileAsString)
         }
@@ -68,8 +65,8 @@ export function useImageEncryption(
       const firstFile = e.target.files[0]
       if (firstFile) {
         const fileReader = new FileReader()
-        fileReader.readAsText(firstFile, "UTF-8")
-        fileReader.onload = () => {
+        fileReader.readAsText(firstFile)
+        fileReader.onloadend = () => {
           const fileAsString = fileReader.result as string
           fileAsString && setEncryptedImage(fileAsString)
         }
@@ -84,10 +81,7 @@ export function useImageEncryption(
     reader.onloadend = () => {
       const imageAsString = reader.result as string
       encryptor.mutate(
-        {
-          image: imageAsString,
-          key
-        },
+        { image: imageAsString, key },
         {
           onSuccess: val => {
             setMode("decrypt")
@@ -101,14 +95,11 @@ export function useImageEncryption(
 
   function decrypt() {
     if (!encryptedImage) return
-
     decryptor.mutate(
-      {
-        image: encryptedImage,
-        key
-      },
+      { image: encryptedImage, key },
       {
         onSuccess: val => {
+          console.log(val)
           const image = val.split(",")[1]
           const imageType = val.split(",")[0]?.split(";")[0]?.split(":")[1]
           const imageAsBlob = new Blob([Buffer.from(image!, "base64")], {

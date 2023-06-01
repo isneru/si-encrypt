@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import { useImageEncryption } from "lib/hooks"
 import { CryptMode } from "lib/types/crypt"
-import { Dispatch, SetStateAction, useEffect } from "react"
+import { Dispatch, SetStateAction } from "react"
 
 interface ImageCryptProps {
   mode: CryptMode
@@ -20,8 +20,6 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
     isWrong,
     setIsDragging
   } = useImageEncryption(setMode)
-
-  useEffect(() => console.log(encryptedImage), [encryptedImage])
 
   if (mode === "encrypt") {
     return (
@@ -57,7 +55,7 @@ export const ImageCrypt = ({ mode, setMode }: ImageCryptProps) => {
           )}
           <input
             hidden
-            accept="image/png, image/jpeg, image/jpg"
+            accept="image/*"
             type="file"
             id="image"
             onChange={handleInputOnChange[mode]}

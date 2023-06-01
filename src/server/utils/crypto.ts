@@ -6,11 +6,10 @@ export const ivBuffer = randomBytes(16)
 function getKeyBuffer(userKey?: string) {
   if (userKey) {
     const keyBufferFill = Buffer.alloc(32, 0)
-    const userKeyBuffer = Buffer.from(userKey, "utf-8")
+    const userKeyBuffer = Buffer.from(userKey, "hex")
     return Buffer.concat([userKeyBuffer, keyBufferFill]).subarray(0, 32)
-  } else {
-    return keyBuffer
   }
+  return keyBuffer
 }
 
 export function encryptText(text: string, userKey?: string) {
