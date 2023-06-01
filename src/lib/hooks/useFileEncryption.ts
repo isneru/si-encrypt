@@ -63,10 +63,7 @@ export function useFileEncryption(
     reader.onloadend = () => {
       const fileAsString = reader.result as string
       encryptor.mutate(
-        {
-          file: fileAsString,
-          key
-        },
+        { file: fileAsString, key },
         {
           onSuccess: val => {
             setMode("decrypt")
@@ -81,18 +78,13 @@ export function useFileEncryption(
   function decrypt() {
     if (!encryptedFile) return
     decryptor.mutate(
-      {
-        file: encryptedFile,
-        key
-      },
+      { file: encryptedFile, key },
       {
         onSuccess: val => {
           const file = val.split(",")[1]
           const fileType = val.split(",")[0]?.split(";")[0]?.split(":")[1]
-          const fileAsBlob = new Blob([Buffer.from(file!, "base64")], {
-            type: fileType
-          })
-          const fileAsFile = new File([fileAsBlob], "decrypted", {
+          const fileBuffer = Buffer.from(file!, "base64")
+          const fileAsFile = new File([fileBuffer], "decrypted", {
             type: fileType
           })
 

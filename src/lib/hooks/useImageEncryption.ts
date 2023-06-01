@@ -80,6 +80,7 @@ export function useImageEncryption(
     reader.readAsDataURL(image)
     reader.onloadend = () => {
       const imageAsString = reader.result as string
+      console.log({ image, imageAsString })
       encryptor.mutate(
         { image: imageAsString, key },
         {
@@ -99,14 +100,11 @@ export function useImageEncryption(
       { image: encryptedImage, key },
       {
         onSuccess: val => {
-          console.log(val)
           const image = val.split(",")[1]
           const imageType = val.split(",")[0]?.split(";")[0]?.split(":")[1]
-          const imageAsBlob = new Blob([Buffer.from(image!, "base64")], {
-            type: imageType
-          })
-          const imageAsFile = new File([imageAsBlob], "decrypted", {
-            type: imageType
+          const imageBuffer = Buffer.from(image!, "base64")
+          const imageAsFile = new File([imageBuffer], "decrypted", {
+            type: imageType ?? "image/png"
           })
           setMode("encrypt")
           setEncryptedImage(undefined)
