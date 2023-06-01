@@ -104,7 +104,7 @@ export function useImageEncryption(
           const imageType = val.split(",")[0]?.split(";")[0]?.split(":")[1]
           const imageBuffer = Buffer.from(image!, "base64")
           const imageAsFile = new File([imageBuffer], "decrypted", {
-            type: imageType ?? "image/png"
+            type: imageType
           })
           setMode("encrypt")
           setEncryptedImage(undefined)
